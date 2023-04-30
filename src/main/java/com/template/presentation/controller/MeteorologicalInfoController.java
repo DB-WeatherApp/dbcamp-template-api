@@ -17,13 +17,13 @@ import java.util.Optional;
 public class MeteorologicalInfoController {
 
     @Autowired
-    MeteorologicalInfoService tutorialService;
+    MeteorologicalInfoService service;
 
     @PostMapping("/meteorologicalInfo")
     public ResponseEntity<MeteorologicalInfoEntity> createTutorial(@RequestBody MeteorologicalInfoEntity meteorologicalInfo) {
         try {
-            MeteorologicalInfoEntity met = tutorialService.create(new MeteorologicalInfoEntity(meteorologicalInfo.getCity(), false));
-            return new ResponseEntity<>(meteorologicalInfo, HttpStatus.CREATED);
+            MeteorologicalInfoEntity metInfo = service.create(meteorologicalInfo);
+            return new ResponseEntity<>(metInfo, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -103,7 +103,7 @@ public class MeteorologicalInfoEntity {
     }
 
     public void setMinTemperature(int minTemperature){
-        this.minTemperature = minTemperature
+        this.minTemperature = minTemperature;
     }
 
     public int getPrecipitaion(){
