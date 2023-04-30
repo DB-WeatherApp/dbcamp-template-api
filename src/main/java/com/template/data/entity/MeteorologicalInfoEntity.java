@@ -1,5 +1,6 @@
 package com.template.data.entity;
 
+import com.template.data.enums.WeatherTypeEnum;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -17,9 +18,9 @@ public class MeteorologicalInfoEntity {
     private Date weatherDate;
 
     @Column(name="morning_weather")
-    private Enum morningWeather;
+    private WeatherTypeEnum morningWeather;
     @Column(name="night_weather")
-    private Enum nightWeather;
+    private WeatherTypeEnum nightWeather;
 
     @Column(name = "max_temperature")
     private int maxTemperature;
@@ -36,8 +37,8 @@ public class MeteorologicalInfoEntity {
             long id,
             String city,
             Date weatherDate,
-            Enum morningWeather,
-            Enum nightWeather,
+            WeatherTypeEnum morningWeather,
+            WeatherTypeEnum nightWeather,
             int maxTemperature,
             int minTemperature,
             int precipitation,
@@ -74,18 +75,18 @@ public class MeteorologicalInfoEntity {
         this.weatherDate = weatherDate;
     }
 
-    public Enum getMorningWeather(){
+    public WeatherTypeEnum getMorningWeather(){
         return morningWeather;
     }
-    public void setMorningWeather(Enum morningWeather){
+    public void setMorningWeather(WeatherTypeEnum morningWeather){
         this.morningWeather = morningWeather;
     }
 
-    public Enum getNightWeather(){
+    public WeatherTypeEnum getNightWeather(){
         return nightWeather;
     }
 
-    public void setNightWeather(Enum nightWeather){
+    public void setNightWeather(WeatherTypeEnum nightWeather){
         this.nightWeather = nightWeather;
     }
 
@@ -127,7 +128,7 @@ public class MeteorologicalInfoEntity {
     }
 
     public void setWindSpeed(int windSpeed){
-        this.windSpeed = windSpeed
+        this.windSpeed = windSpeed;
     }
 
 
