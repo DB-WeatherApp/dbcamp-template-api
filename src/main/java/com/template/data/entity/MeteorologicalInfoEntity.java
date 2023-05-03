@@ -3,7 +3,7 @@ package com.template.data.entity;
 import com.template.data.enums.WeatherTypeEnum;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "meteorological_info")
@@ -15,7 +15,7 @@ public class MeteorologicalInfoEntity {
     @Column(name="city")
     private String city;
     @Column(name = "weather_date")
-    private Date weatherDate;
+    private LocalDate weatherDate;
 
     @Column(name="morning_weather")
     private WeatherTypeEnum morningWeather;
@@ -34,9 +34,8 @@ public class MeteorologicalInfoEntity {
     private int windSpeed;
 
     public MeteorologicalInfoEntity(
-            long id,
             String city,
-            Date weatherDate,
+            LocalDate weatherDate,
             WeatherTypeEnum morningWeather,
             WeatherTypeEnum nightWeather,
             int maxTemperature,
@@ -45,7 +44,7 @@ public class MeteorologicalInfoEntity {
             int humidity,
             int windSpeed
     ){
-        this.id = id;
+
         this.city = city;
         this.weatherDate = weatherDate;
         this.morningWeather = morningWeather;
@@ -67,11 +66,11 @@ public class MeteorologicalInfoEntity {
         this.city = city;
     }
 
-    public Date getWeatherDate(){
+    public LocalDate getWeatherDate(){
         return weatherDate;
     }
 
-    public void setWeatherDate(Date weatherDate){
+    public void setWeatherDate(LocalDate weatherDate){
         this.weatherDate = weatherDate;
     }
 
