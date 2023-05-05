@@ -12,23 +12,18 @@ public class MeteorologicalInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column(name="city")
     private String city;
     @Column(name = "weather_date")
     private LocalDate weatherDate;
-
     @Column(name="morning_weather")
     private WeatherTypeEnum morningWeather;
     @Column(name="night_weather")
     private WeatherTypeEnum nightWeather;
-
     @Column(name = "max_temperature")
     private int maxTemperature;
     @Column(name = "min_temperature")
     private int minTemperature;
-    @Column(name = "precipitation ")
     private int precipitation;
-    @Column(name = "humidity")
     private int humidity;
     @Column(name = "wind_speed")
     private int windSpeed;
@@ -55,6 +50,8 @@ public class MeteorologicalInfoEntity {
         this.humidity = humidity;
         this.windSpeed = windSpeed;
     }
+    public MeteorologicalInfoEntity(){
+    };
 
     public long getId() {
         return id;
@@ -88,48 +85,35 @@ public class MeteorologicalInfoEntity {
     public void setNightWeather(WeatherTypeEnum nightWeather){
         this.nightWeather = nightWeather;
     }
-
     public int getMaxTemperature(){
         return maxTemperature;
     }
-
     public void setMaxTemperature(int maxTemperature){
         this.maxTemperature = maxTemperature;
     }
-
     public int getMinTemperature(){
         return minTemperature;
     }
-
     public void setMinTemperature(int minTemperature){
         this.minTemperature = minTemperature;
     }
-
     public int getPrecipitaion(){
         return precipitation;
     }
-
     public void setPrecipitaion(int precipitaion){
         this.precipitation = precipitaion;
     }
-
-
     public int getHumidity(){
         return humidity;
     }
-
     public void setHumidity(int humidity){
         this.humidity = humidity;
     }
-
     public int getWindSpeed(){
         return windSpeed;
     }
-
     public void setWindSpeed(int windSpeed){
         this.windSpeed = windSpeed;
     }
-
-
 
 }
