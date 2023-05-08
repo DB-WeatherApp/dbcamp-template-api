@@ -3,6 +3,7 @@ package com.template.presentation.controller;
 import com.template.business.services.MeteorologicalInfoService;
 import com.template.data.DTO.MeteorologicalInfoDTO;
 import com.template.data.entity.MeteorologicalInfoEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,5 +52,11 @@ public class MeteorologicalInfoController {
         }catch (Exception error){
                 return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deleteMeteorologicalInfo(@PathVariable Long id) {
+        service.deleteById(id);
     }
 }
