@@ -25,7 +25,7 @@ public class MeteorologicalInfoService {
     }
 
     @Transactional
-    public MeteorologicalInfoEntity create(@RequestBody MeteorologicalInfoDTO metInfoDTO){
+    public MeteorologicalInfoEntity createMeteorologicalInfo(@RequestBody MeteorologicalInfoDTO metInfoDTO){
         return repository.save(new MeteorologicalInfoEntity(
                 metInfoDTO.city(),
                 metInfoDTO.weatherDate(),
@@ -40,9 +40,17 @@ public class MeteorologicalInfoService {
     }
 
     @Transactional
-    public void deleteById(Long id){
+    public void deleteMeteorologicalInfoById(Long id){
         repository.deleteById(id);
     }
 
+    @Transactional
+    public void  editMeteorologicalInfo(@RequestBody MeteorologicalInfoEntity meteorologicalEntity){
+        MeteorologicalInfoEntity metinfo =  repository.getReferenceById(meteorologicalEntity.getId());
+        metinfo.atualizarinformacoes(meteorologicalEntity);
+    }
+
+
+    
 
 }

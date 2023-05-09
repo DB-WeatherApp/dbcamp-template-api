@@ -28,7 +28,7 @@ public class MeteorologicalInfoController {
     @PostMapping
     public ResponseEntity<MeteorologicalInfoEntity> createMeteorologicalData(@RequestBody MeteorologicalInfoDTO meteorologicalInfoDTO) {
         try {
-            MeteorologicalInfoEntity metInfo = service.create(meteorologicalInfoDTO);
+            MeteorologicalInfoEntity metInfo = service.createMeteorologicalInfo(meteorologicalInfoDTO);
             return new ResponseEntity<MeteorologicalInfoEntity>(metInfo, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -57,6 +57,13 @@ public class MeteorologicalInfoController {
     @DeleteMapping("/{id}")
     @Transactional
     public void deleteMeteorologicalInfo(@PathVariable Long id) {
-        service.deleteById(id);
+        service.deleteMeteorologicalInfoById(id);
     }
+
+    @PutMapping
+    @Transactional
+    public void atualizar(@RequestBody MeteorologicalInfoEntity metInfo){
+        service.editMeteorologicalInfo(metInfo);
+    }
+
 }
