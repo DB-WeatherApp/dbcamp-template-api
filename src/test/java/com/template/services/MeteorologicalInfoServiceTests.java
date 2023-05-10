@@ -5,6 +5,9 @@ import com.template.data.DTO.MeteorologicalInfoDTO;
 import com.template.data.entity.MeteorologicalInfoEntity;
 import com.template.data.enums.WeatherTypeEnum;
 import com.template.data.repository.MeteorologicalInfoRepository;
+import org.apache.coyote.Request;
+import org.apache.coyote.Response;
+import org.hibernate.ObjectNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,10 +18,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -81,7 +87,7 @@ class MeteorologicalInfoServiceTests {
 	@DisplayName("Create - POST Sucess")
 	void createdNewMeteorologicalInfo() {
 		when(repository.save(any())).thenReturn(meteorologicalInfoEntitySucess);
-		MeteorologicalInfoEntity newMeteorologicalInfo = service.create(meteorologicalInfoEntitySucessDTO);
+		MeteorologicalInfoEntity newMeteorologicalInfo = service.createMeteorologicalInfo(meteorologicalInfoEntitySucessDTO);
 		assertNotNull(newMeteorologicalInfo);
 		verify(repository).save(any());
 	}
@@ -90,7 +96,7 @@ class MeteorologicalInfoServiceTests {
 	@DisplayName("Create - POST Failed")
 	void createFaild(){
 		when(repository.save(any())).thenReturn(meteorologicalInfoFailed);
-		MeteorologicalInfoEntity newMeteorologicalInfo = service.create(meteorologicalInfoFailedDTO);
+		MeteorologicalInfoEntity newMeteorologicalInfo = service.createMeteorologicalInfo(meteorologicalInfoFailedDTO);
 		assertEquals(null,meteorologicalInfoFailed.getCity());
 		verify(repository).save(any());
 	}
@@ -108,6 +114,30 @@ class MeteorologicalInfoServiceTests {
 		assertNotNull(response);
 		assertEquals(meteorologicalInfoList, response.getContent());
 		assertEquals(1, response.getTotalElements());
+	}
+
+	@Test
+	@DisplayName("DeleteByID - DELETE Sucess")
+	void DeleteByIdSucess(){
+		Long meteorologicalInfoId = 10L;
+		doNothing().when(repository).deleteById(meteorologicalInfoId);
+		service.deleteMeteorologicalInfoById(meteorologicalInfoId);
+		verify(repository,times(1)).deleteById(meteorologicalInfoId);
+	}
+
+	@Test
+	@DisplayName("DeleteByID- Delete Failed")
+	void deleteWithObjectNotFound(){
+		Long meteorologicalInfoId = 10L;
+		 when(repository.findById(anyLong()))
+				 .thenThrow(new ObjectNotFoundException());
+		try{
+			service.deleteMeteorologicalInfoById(meteorologicalInfoId);
+		} catch(Exception e){
+			assertEquals(ObjectNotFoundException.class, e.getClass());
+		}
+
+
 	}
 
 
