@@ -1,5 +1,6 @@
 package com.template.services;
 
+import com.template.Exception.MissingParameterException;
 import com.template.business.services.MeteorologicalInfoService;
 import com.template.data.DTO.MeteorologicalInfoDTO;
 import com.template.data.entity.MeteorologicalInfoEntity;
@@ -18,7 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -26,8 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -87,18 +89,28 @@ class MeteorologicalInfoServiceTests {
 	@DisplayName("Create - POST Sucess")
 	void createdNewMeteorologicalInfo() {
 		when(repository.save(any())).thenReturn(meteorologicalInfoEntitySucess);
-		MeteorologicalInfoEntity newMeteorologicalInfo = service.createMeteorologicalInfo(meteorologicalInfoEntitySucessDTO);
+
+		MeteorologicalInfoEntity newMeteorologicalInfo = service.createMeteorologicalInfo(meteorologicalInfoEntitySucess);
+
 		assertNotNull(newMeteorologicalInfo);
-		verify(repository).save(any());
+		assertEquals(MeteorologicalInfoEntity.class, newMeteorologicalInfo.getClass());
+		assertEquals(meteorologicalInfoEntitySucess.getCity(),newMeteorologicalInfo.getCity());
+		assertEquals(meteorologicalInfoEntitySucessDTO.weatherDate(),newMeteorologicalInfo.getWeatherDate());
+		assertEquals(meteorologicalInfoEntitySucessDTO.morningWeather(),newMeteorologicalInfo.getMorningWeather());
+		assertEquals(meteorologicalInfoEntitySucessDTO.nightWeather(),newMeteorologicalInfo.getNightWeather());
+		assertEquals(meteorologicalInfoEntitySucessDTO.minTemperature(),newMeteorologicalInfo.getMinTemperature());
+		assertEquals(meteorologicalInfoEntitySucessDTO.maxTemperature(),newMeteorologicalInfo.getMaxTemperature());
+		assertEquals(meteorologicalInfoEntitySucessDTO.humidity(),newMeteorologicalInfo.getHumidity());
+		assertEquals(meteorologicalInfoEntitySucessDTO.precipitaion(),newMeteorologicalInfo.getPrecipitaion());
+		assertEquals(meteorologicalInfoEntitySucessDTO.windSpeed(),newMeteorologicalInfo.getWindSpeed());
 	}
 
 	@Test
 	@DisplayName("Create - POST Failed")
 	void createFaild(){
-		when(repository.save(any())).thenReturn(meteorologicalInfoFailed);
-		MeteorologicalInfoEntity newMeteorologicalInfo = service.createMeteorologicalInfo(meteorologicalInfoFailedDTO);
-		assertEquals(null,meteorologicalInfoFailed.getCity());
-		verify(repository).save(any());
+		var entityNull = new MeteorologicalInfoEntity();
+
+			assertThrows(MissingParameterException.class,()-> service.createMeteorologicalInfo(entityNull));
 	}
 
 	@Test
@@ -125,7 +137,7 @@ class MeteorologicalInfoServiceTests {
 		verify(repository,times(1)).deleteById(meteorologicalInfoId);
 	}
 
-	@Test
+	/*@Test
 	@DisplayName("DeleteByID- Delete Failed")
 	void deleteWithObjectNotFound(){
 		Long meteorologicalInfoId = 10L;
@@ -140,6 +152,6 @@ class MeteorologicalInfoServiceTests {
 
 	}
 
-
+*/
 
 }

@@ -26,13 +26,9 @@ public class MeteorologicalInfoController {
     MeteorologicalInfoService service;
 
     @PostMapping
-    public ResponseEntity<MeteorologicalInfoEntity> createMeteorologicalData(@RequestBody MeteorologicalInfoDTO meteorologicalInfoDTO) {
-        try {
-            MeteorologicalInfoEntity metInfo = service.createMeteorologicalInfo(meteorologicalInfoDTO);
+    public ResponseEntity<MeteorologicalInfoEntity> createMeteorologicalData(@RequestBody MeteorologicalInfoEntity meteorologicalInfoEntity) {
+            MeteorologicalInfoEntity metInfo = service.createMeteorologicalInfo(meteorologicalInfoEntity);
             return new ResponseEntity<MeteorologicalInfoEntity>(metInfo, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @GetMapping

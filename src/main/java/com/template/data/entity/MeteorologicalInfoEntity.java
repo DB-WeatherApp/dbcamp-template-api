@@ -2,6 +2,7 @@ package com.template.data.entity;
 
 import com.template.data.enums.WeatherTypeEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
@@ -12,6 +13,8 @@ public class MeteorologicalInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @NotBlank
     private String city;
     @Column(name = "weather_date")
     private LocalDate weatherDate;
