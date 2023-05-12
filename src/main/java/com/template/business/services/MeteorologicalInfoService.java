@@ -1,5 +1,6 @@
 package com.template.business.services;
 
+import com.template.Exception.MeteorologicalInfoNotFound;
 import com.template.Exception.MissingParameterException;
 import com.template.data.entity.MeteorologicalInfoEntity;
 import com.template.data.repository.MeteorologicalInfoRepository;
@@ -33,11 +34,12 @@ public class MeteorologicalInfoService {
 
     public  MeteorologicalInfoEntity findById(Long id){
         Optional<MeteorologicalInfoEntity> metinfo = repository.findById(id);
-        return metinfo.orElse(null);
+        return metinfo.orElseThrow(()-> new MeteorologicalInfoNotFound("Informação Meteorológica não encontrada!"));
     }
 
     @Transactional
     public void deleteMeteorologicalInfoById(Long id){
+        findById(id);
         repository.deleteById(id);
     }
 
