@@ -1,7 +1,6 @@
 package com.template.business.services;
 
 import com.template.Exception.MissingParameterException;
-import com.template.data.DTO.MeteorologicalInfoDTO;
 import com.template.data.entity.MeteorologicalInfoEntity;
 import com.template.data.repository.MeteorologicalInfoRepository;
 import jakarta.transaction.Transactional;
@@ -9,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Optional;
 
 @Service
 public class MeteorologicalInfoService {
@@ -28,11 +28,12 @@ public class MeteorologicalInfoService {
 
     @Transactional
     public MeteorologicalInfoEntity createMeteorologicalInfo(@RequestBody MeteorologicalInfoEntity metInfoEntity){
-        try {
             return repository.save(metInfoEntity);
-        }catch (Exception e){
-            throw new MissingParameterException("teste");
-        }
+    }
+
+    public  MeteorologicalInfoEntity findById(Long id){
+        Optional<MeteorologicalInfoEntity> metinfo = repository.findById(id);
+        return metinfo.orElse(null);
     }
 
     @Transactional
