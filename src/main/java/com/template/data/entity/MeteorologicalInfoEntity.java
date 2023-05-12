@@ -32,6 +32,7 @@ public class MeteorologicalInfoEntity {
     private Integer windSpeed;
 
     public MeteorologicalInfoEntity(
+            long id,
             String city,
             LocalDate weatherDate,
             WeatherTypeEnum morningWeather,
@@ -42,7 +43,7 @@ public class MeteorologicalInfoEntity {
             int humidity,
             int windSpeed
     ){
-
+        this.id = id;
         this.city = city;
         this.weatherDate = weatherDate;
         this.morningWeather = morningWeather;
