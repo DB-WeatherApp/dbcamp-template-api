@@ -143,7 +143,7 @@ public class MeteorologicalInfoEntity {
             this.precipitation = meteorologicalEntity.precipitation;
         }
         if(meteorologicalEntity.humidity !=null){
-            this.precipitation = meteorologicalEntity.humidity;
+            this.humidity = meteorologicalEntity.humidity;
         }
         if(meteorologicalEntity.windSpeed !=null){
             this.windSpeed = meteorologicalEntity.windSpeed;
