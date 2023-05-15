@@ -209,7 +209,7 @@ class MeteorologicalInfoServiceTests {
     }
 
     @Test
-    @DisplayName("Upadete Failed - When editMeteorologicalInfo is with Inexistent ID, should recieve a RunTime Exeception")
+    @DisplayName("Upadete Failed - When editMeteorologicalInfo is called with Inexistent ID, should recieve a RunTime Exeception")
     void editByIdWithInexistentId(){
         when(repository.getReferenceById(meteorologicalInfoFailed.getId())).thenThrow(new RuntimeException());
         try{
@@ -218,5 +218,30 @@ class MeteorologicalInfoServiceTests {
             assertEquals(RuntimeException.class, e.getClass());
         }
     }
+    @Test
+    @DisplayName("Find By City Sucess - When findByCity is called with a city that exist, should return a list of MeteorologicalInfo with this city")
+    void findByCitySucess(){
+        List<MeteorologicalInfoEntity> meteorologicalInfoList = List.of(meteorologicalInfoEntitySucess);
+        when(repository.findByCity(meteorologicalInfoEntitySucess.getCity())).thenReturn(meteorologicalInfoList);
+        List<MeteorologicalInfoEntity> metInfoList = service.findByCity(meteorologicalInfoEntitySucess.getCity());
+
+        assertNotNull(metInfoList);
+        assertEquals(meteorologicalInfoList,metInfoList);
+
+    }
+    @Test
+    @DisplayName("Find By City Failed - When findByCity is called with a city that dont exist, should return Runtime Exeception ")
+    void findByCityFailed(){
+        when(repository.findByCity(meteorologicalInfoEntitySucess.getCity())).thenThrow(new RuntimeException());
+        try{
+            service.findByCity(meteorologicalInfoEntitySucess.getCity());
+        }catch (Exception e){
+            assertEquals(RuntimeException.class, e.getClass());
+        }
+
+
+    }
+
+
 
 }
