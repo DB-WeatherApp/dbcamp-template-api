@@ -62,7 +62,7 @@ public class MeteorologicalInfoController {
 
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody MeteorologicalInfoEntity metInfo){
+    public void upadateMeteorologicalInfo(@RequestBody MeteorologicalInfoEntity metInfo){
         service.editMeteorologicalInfo(metInfo);
     }
 
