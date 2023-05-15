@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4767")
 @RestController
@@ -52,6 +53,11 @@ public class MeteorologicalInfoController {
     public ResponseEntity<MeteorologicalInfoEntity> findMeteorologicalDataID(@PathVariable Long id){
         return ResponseEntity.ok().body(service.findById(id));
     }
+    @GetMapping("/find={city}")
+    public ResponseEntity <List<MeteorologicalInfoEntity>> findMeteorologicalInfoByCity(@PathVariable String city){
+        List<MeteorologicalInfoEntity> metInfoList = service.findByCity(city);
+        return new ResponseEntity<List<MeteorologicalInfoEntity>>(metInfoList,HttpStatus.OK);
+    };
 
 
     @DeleteMapping("/{id}")
