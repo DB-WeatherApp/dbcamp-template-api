@@ -44,9 +44,10 @@ public class MeteorologicalInfoService {
     }
 
     @Transactional
-    public void  editMeteorologicalInfo(@RequestBody MeteorologicalInfoEntity meteorologicalEntity){
+    public MeteorologicalInfoEntity editMeteorologicalInfo(@RequestBody MeteorologicalInfoEntity meteorologicalEntity){
         MeteorologicalInfoEntity metinfo =  repository.getReferenceById(meteorologicalEntity.getId());
         metinfo.atualizarinformacoes(meteorologicalEntity);
+        return meteorologicalEntity;
     }
 
 

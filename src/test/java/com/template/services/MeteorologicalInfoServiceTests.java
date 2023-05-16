@@ -24,6 +24,7 @@ import java.util.Optional;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -31,132 +32,191 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("MeteorologicalInfo Service Tests")
 class MeteorologicalInfoServiceTests {
-	@Mock
-	MeteorologicalInfoRepository repository;
+    @Mock
+    MeteorologicalInfoRepository repository;
 
-	@InjectMocks
-	private MeteorologicalInfoService service;
+    @InjectMocks
+    private MeteorologicalInfoService service;
 
-	MeteorologicalInfoEntity meteorologicalInfoEntitySucess = new MeteorologicalInfoEntity(
-			10L,
-			"Salvador",
-			LocalDate.of(2023,05,11),
-			WeatherTypeEnum.SUNNY,WeatherTypeEnum.STORMY,
-			38,
-			30,
-			80,
-			75,
-			8
-	);
+    MeteorologicalInfoEntity meteorologicalInfoEntitySucess = new MeteorologicalInfoEntity(
+            10L,
+            "Salvador",
+            LocalDate.of(2023, 05, 11),
+            WeatherTypeEnum.SUNNY, WeatherTypeEnum.STORMY,
+            38,
+            30,
+            80,
+            75,
+            8
+    );
+    MeteorologicalInfoEntity meteorologicalInfoEntityEdited = new MeteorologicalInfoEntity(
+            10L,
+            "São Paulo",
+            LocalDate.of(2023, 05, 11),
+            WeatherTypeEnum.SUNNY, WeatherTypeEnum.STORMY,
+            40,
+            20,
+            50,
+            53,
+            1
+    );
 
-	MeteorologicalInfoEntity meteorologicalInfoFailed  = new MeteorologicalInfoEntity(
-			10L,
-			null,
-			LocalDate.of(2023,05,11),
-			WeatherTypeEnum.SUNNY,WeatherTypeEnum.STORMY,
-			38,
-			30,
-			80,
-			75,
-			8
-	);
+    MeteorologicalInfoEntity meteorologicalInfoFailed = new MeteorologicalInfoEntity(
+            30,
+            null,
+            LocalDate.of(2023, 05, 11),
+            WeatherTypeEnum.SUNNY, WeatherTypeEnum.STORMY,
+            38,
+            30,
+            80,
+            75,
+            8
+    );
 
 
-	@Test
-	@DisplayName("Create - POST Sucess")
-	void createdNewMeteorologicalInfo() {
-		when(repository.save(any())).thenReturn(meteorologicalInfoEntitySucess);
 
-		MeteorologicalInfoEntity newMeteorologicalInfo = service.createMeteorologicalInfo(meteorologicalInfoEntitySucess);
+    @Test
+    @DisplayName("Create Sucess - Should create a MeteorologicalInfo Entity with Sucess ")
+    void createdNewMeteorologicalInfo() {
+        when(repository.save(any())).thenReturn(meteorologicalInfoEntitySucess);
 
-		assertNotNull(newMeteorologicalInfo);
-		assertEquals(MeteorologicalInfoEntity.class, newMeteorologicalInfo.getClass());
-		assertEquals(meteorologicalInfoEntitySucess.getCity(),newMeteorologicalInfo.getCity());
-		assertEquals(meteorologicalInfoEntitySucess.getWeatherDate(),newMeteorologicalInfo.getWeatherDate());
-		assertEquals(meteorologicalInfoEntitySucess.getMorningWeather(),newMeteorologicalInfo.getMorningWeather());
-		assertEquals(meteorologicalInfoEntitySucess.getNightWeather(),newMeteorologicalInfo.getNightWeather());
-		assertEquals(meteorologicalInfoEntitySucess.getMinTemperature(),newMeteorologicalInfo.getMinTemperature());
-		assertEquals(meteorologicalInfoEntitySucess.getMaxTemperature(),newMeteorologicalInfo.getMaxTemperature());
-		assertEquals(meteorologicalInfoEntitySucess.getHumidity(),newMeteorologicalInfo.getHumidity());
-		assertEquals(meteorologicalInfoEntitySucess.getPrecipitaion(),newMeteorologicalInfo.getPrecipitaion());
-		assertEquals(meteorologicalInfoEntitySucess.getWindSpeed(),newMeteorologicalInfo.getWindSpeed());
-	}
+        MeteorologicalInfoEntity newMeteorologicalInfo = service.createMeteorologicalInfo(meteorologicalInfoEntitySucess);
 
-	@Test
-	@DisplayName("Create - POST Failed")
-	void createFaild(){
-		try{
-			service.createMeteorologicalInfo(new MeteorologicalInfoEntity());
-		} catch (Exception e){
-			assertEquals(RuntimeException.class, e.getClass());
-		}
-	}
+        assertAll(() -> {
+            assertNotNull(newMeteorologicalInfo);
+            assertEquals(MeteorologicalInfoEntity.class, newMeteorologicalInfo.getClass());
+            assertEquals(meteorologicalInfoEntitySucess.getCity(), newMeteorologicalInfo.getCity());
+            assertEquals(meteorologicalInfoEntitySucess.getWeatherDate(), newMeteorologicalInfo.getWeatherDate());
+            assertEquals(meteorologicalInfoEntitySucess.getMorningWeather(), newMeteorologicalInfo.getMorningWeather());
+            assertEquals(meteorologicalInfoEntitySucess.getNightWeather(), newMeteorologicalInfo.getNightWeather());
+            assertEquals(meteorologicalInfoEntitySucess.getMinTemperature(), newMeteorologicalInfo.getMinTemperature());
+            assertEquals(meteorologicalInfoEntitySucess.getMaxTemperature(), newMeteorologicalInfo.getMaxTemperature());
+            assertEquals(meteorologicalInfoEntitySucess.getHumidity(), newMeteorologicalInfo.getHumidity());
+            assertEquals(meteorologicalInfoEntitySucess.getPrecipitaion(), newMeteorologicalInfo.getPrecipitaion());
+            assertEquals(meteorologicalInfoEntitySucess.getWindSpeed(), newMeteorologicalInfo.getWindSpeed());
+        });
 
-	@Test
-	@DisplayName("Find By Id - Get Sucess")
-	void whenFindByIdReturnAMeteorologicalInfo(){
-		when(repository.findById(anyLong())).thenReturn(Optional.ofNullable(meteorologicalInfoEntitySucess));
-		Long meteorologicalInfoId = 10L;
-		MeteorologicalInfoEntity response = service.findById(meteorologicalInfoId);
+    }
 
-		assertNotNull(response);
-		assertEquals(MeteorologicalInfoEntity.class, response.getClass());
-		assertEquals(meteorologicalInfoEntitySucess.getCity(),response.getCity());
-		assertEquals(meteorologicalInfoEntitySucess.getWeatherDate(),response.getWeatherDate());
-		assertEquals(meteorologicalInfoEntitySucess.getMorningWeather(),response.getMorningWeather());
-		assertEquals(meteorologicalInfoEntitySucess.getNightWeather(),response.getNightWeather());
-		assertEquals(meteorologicalInfoEntitySucess.getMinTemperature(),response.getMinTemperature());
-		assertEquals(meteorologicalInfoEntitySucess.getMaxTemperature(),response.getMaxTemperature());
-		assertEquals(meteorologicalInfoEntitySucess.getHumidity(),response.getHumidity());
-		assertEquals(meteorologicalInfoEntitySucess.getPrecipitaion(),response.getPrecipitaion());
-		assertEquals(meteorologicalInfoEntitySucess.getWindSpeed(),response.getWindSpeed());
-	}
-	@Test
-	@DisplayName("Find By Id - Get Failed")
-	void whenFindByIdReturnExeption(){
-		Long meteorologicalInfoId = 10L;
-		try{
-			service.findById(meteorologicalInfoId);
-		} catch (Exception e){
-			assertEquals(MeteorologicalInfoNotFound.class, e.getClass());
-		}
-	}
+    @Test
+    @DisplayName("Create Failed - Should not create a MeteorologicalInfo Entity cause have a null parameter")
+    void createFaild() {
+        try {
+            service.createMeteorologicalInfo(new MeteorologicalInfoEntity());
+        } catch (Exception e) {
+            assertEquals(RuntimeException.class, e.getClass());
+        }
+    }
 
-	@Test
-	@DisplayName("GetAll - GET Success")
-	void getAllSucess() {
-		Pageable page = mock(Pageable.class);
-		List<MeteorologicalInfoEntity> meteorologicalInfoList = List.of(meteorologicalInfoEntitySucess);
-		Page<MeteorologicalInfoEntity> pagination = new PageImpl<>(meteorologicalInfoList);
-		when(repository.findAll(any(Pageable.class))).thenReturn(pagination);
+    @Test
+    @DisplayName("FindById Sucess - When find by Id is called, should return a MeteorologicalInfo Entity")
+    void whenFindByIdReturnAMeteorologicalInfo() {
+        when(repository.findById(anyLong())).thenReturn(Optional.ofNullable(meteorologicalInfoEntitySucess));
+        Long meteorologicalInfoId = 10L;
+        MeteorologicalInfoEntity response = service.findById(meteorologicalInfoId);
+        assertAll(()->{
+            assertNotNull(response);
+            assertEquals(MeteorologicalInfoEntity.class, response.getClass());
+            assertEquals(meteorologicalInfoEntitySucess.getCity(), response.getCity());
+            assertEquals(meteorologicalInfoEntitySucess.getWeatherDate(), response.getWeatherDate());
+            assertEquals(meteorologicalInfoEntitySucess.getMorningWeather(), response.getMorningWeather());
+            assertEquals(meteorologicalInfoEntitySucess.getNightWeather(), response.getNightWeather());
+            assertEquals(meteorologicalInfoEntitySucess.getMinTemperature(), response.getMinTemperature());
+            assertEquals(meteorologicalInfoEntitySucess.getMaxTemperature(), response.getMaxTemperature());
+            assertEquals(meteorologicalInfoEntitySucess.getHumidity(), response.getHumidity());
+            assertEquals(meteorologicalInfoEntitySucess.getPrecipitaion(), response.getPrecipitaion());
+            assertEquals(meteorologicalInfoEntitySucess.getWindSpeed(), response.getWindSpeed());
+        });
 
-		Page<MeteorologicalInfoEntity> response = service.getAll(page);
+    }
 
-		assertNotNull(response);
-		assertEquals(meteorologicalInfoList, response.getContent());
-		assertEquals(1, response.getTotalElements());
-	}
+    @Test
+    @DisplayName("FindById Failed - When find by Id is called with a nonexistent ID, should return 404 not found")
+    void whenFindByIdReturnExeption() {
+        Long meteorologicalInfoId = 10L;
+        try {
+            service.findById(meteorologicalInfoId);
+        } catch (Exception e) {
+            assertEquals(MeteorologicalInfoNotFound.class, e.getClass());
+        }
+    }
 
-	@Test
-	@DisplayName("DeleteByID - DELETE Sucess")
-	void DeleteByIdSucess(){
-		when(repository.findById(anyLong())).thenReturn(Optional.ofNullable(meteorologicalInfoEntitySucess));
-		Long meteorologicalInfoId = 10L;
-		doNothing().when(repository).deleteById(meteorologicalInfoId);
-		service.deleteMeteorologicalInfoById(meteorologicalInfoId);
-		verify(repository,times(1)).deleteById(meteorologicalInfoId);
-	}
+    @Test
+    @DisplayName("FindAll Sucess - When FindAll is called should return all MeteorologicalInfos registred in the DB")
+    void getAllSucess() {
+        Pageable page = mock(Pageable.class);
+        List<MeteorologicalInfoEntity> meteorologicalInfoList = List.of(meteorologicalInfoEntitySucess);
+        Page<MeteorologicalInfoEntity> pagination = new PageImpl<>(meteorologicalInfoList);
+        when(repository.findAll(any(Pageable.class))).thenReturn(pagination);
 
-	@Test
-	@DisplayName("DeleteByID- Delete Failed")
-	void deleteWithObjectNotFound(){
-		Long meteorologicalInfoId = 10L;
-		when(repository.findById(anyLong())).thenThrow(new MeteorologicalInfoNotFound("Informação Meteorológica não encontrada!"));
-		try{
-			service.deleteMeteorologicalInfoById(meteorologicalInfoId);
-		} catch(Exception e){
-			assertEquals(MeteorologicalInfoNotFound.class, e.getClass());
-		}
-	}
+        Page<MeteorologicalInfoEntity> response = service.getAll(page);
+
+        assertNotNull(response);
+        assertEquals(meteorologicalInfoList, response.getContent());
+        assertEquals(1, response.getTotalElements());
+    }
+
+    @Test
+    @DisplayName("Delete By ID Sucesss - Should Delete a MeteorologicalInfo in the DB by its ID")
+    void DeleteByIdSucess() {
+        when(repository.findById(anyLong())).thenReturn(Optional.ofNullable(meteorologicalInfoEntitySucess));
+        Long meteorologicalInfoId = 10L;
+        doNothing().when(repository).deleteById(meteorologicalInfoId);
+        service.deleteMeteorologicalInfoById(meteorologicalInfoId);
+        verify(repository, times(1)).deleteById(meteorologicalInfoId);
+    }
+
+    @Test
+    @DisplayName("DeleteByID Failed- When delete by ID its called with a nonexistent ID, should return a error 404 not found")
+    void deleteWithObjectNotFound() {
+        Long meteorologicalInfoId = 10L;
+        when(repository.findById(anyLong())).thenThrow(new MeteorologicalInfoNotFound("Informação Meteorológica não encontrada!"));
+        try {
+            service.deleteMeteorologicalInfoById(meteorologicalInfoId);
+        } catch (Exception e) {
+            assertEquals(MeteorologicalInfoNotFound.class, e.getClass());
+        }
+    }
+
+    @Test
+    @DisplayName("Upadete Sucess - When editMeteorologicalInfo is called should find the entity by its Id and Update with new parameters in the DB")
+    void editByIdSucess(){
+        when(repository.getReferenceById(meteorologicalInfoEntitySucess.getId())).thenReturn(meteorologicalInfoEntitySucess);
+        MeteorologicalInfoEntity editedMeteorologicalInfo = service.editMeteorologicalInfo(meteorologicalInfoEntityEdited);
+
+        assertAll(()->{
+            assertNotNull(editedMeteorologicalInfo);
+            assertEquals(meteorologicalInfoEntitySucess.getClass(), editedMeteorologicalInfo.getClass());
+            assertEquals(meteorologicalInfoEntitySucess.getCity(), editedMeteorologicalInfo.getCity());
+            assertEquals(meteorologicalInfoEntitySucess.getWeatherDate(), editedMeteorologicalInfo.getWeatherDate());
+            assertEquals(meteorologicalInfoEntitySucess.getMorningWeather(), editedMeteorologicalInfo.getMorningWeather());
+            assertEquals(meteorologicalInfoEntitySucess.getNightWeather(), editedMeteorologicalInfo.getNightWeather());
+            assertEquals(meteorologicalInfoEntitySucess.getMinTemperature(), editedMeteorologicalInfo.getMinTemperature());
+            assertEquals(meteorologicalInfoEntitySucess.getMaxTemperature(), editedMeteorologicalInfo.getMaxTemperature());
+            assertEquals(meteorologicalInfoEntitySucess.getHumidity(), editedMeteorologicalInfo.getHumidity());
+            assertEquals(meteorologicalInfoEntitySucess.getPrecipitaion(), editedMeteorologicalInfo.getPrecipitaion());
+            assertEquals(meteorologicalInfoEntitySucess.getWindSpeed(),editedMeteorologicalInfo.getWindSpeed());
+        });
+    }
+    @Test
+    @DisplayName("Upadete Failed - When editMeteorologicalInfo is with null MeteorologicalInfoEntity, should recieve a null pointer exeception")
+    void editByIdWithNullMeteorologicalEntity(){
+        try{
+            service.editMeteorologicalInfo(new MeteorologicalInfoEntity());
+        } catch (Exception e){
+            assertEquals(NullPointerException.class, e.getClass());
+        }
+    }
+
+    @Test
+    @DisplayName("Upadete Failed - When editMeteorologicalInfo is with Inexistent ID, should recieve a RunTime Exeception")
+    void editByIdWithInexistentId(){
+        when(repository.getReferenceById(meteorologicalInfoFailed.getId())).thenThrow(new RuntimeException());
+        try{
+            service.editMeteorologicalInfo(meteorologicalInfoFailed);
+        } catch (Exception e){
+            assertEquals(RuntimeException.class, e.getClass());
+        }
+    }
 
 }
