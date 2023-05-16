@@ -51,8 +51,8 @@ public class MeteorologicalInfoService {
         return meteorologicalEntity;
     }
 
-    public List<MeteorologicalInfoEntity> findByCity(String city){
-        return repository.findByCity(city);
+    public Page<MeteorologicalInfoEntity> findByCity(String city, Pageable pagination){
+        return repository.findByCity(city,pagination);
     }
 
 
