@@ -7,6 +7,5 @@ import java.util.List;
 
 
 public interface MeteorologicalInfoRepository extends JpaRepository<MeteorologicalInfoEntity, Long> {
-
     List<MeteorologicalInfoEntity> findByCity(String city);
 }

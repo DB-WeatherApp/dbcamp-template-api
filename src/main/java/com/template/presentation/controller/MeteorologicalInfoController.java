@@ -1,8 +1,9 @@
 package com.template.presentation.controller;
 
 import com.template.business.services.MeteorologicalInfoService;
-import com.template.data.DTO.MeteorologicalInfoDTO;
 import com.template.data.entity.MeteorologicalInfoEntity;
+import com.template.data.enums.WeatherTypeEnum;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
+import java.time.LocalDate;
 
 @CrossOrigin(origins = "http://localhost:4767")
 @RestController
@@ -25,13 +24,9 @@ public class MeteorologicalInfoController {
     MeteorologicalInfoService service;
 
     @PostMapping
-    public ResponseEntity<MeteorologicalInfoEntity> createMeteorologicalData(@RequestBody MeteorologicalInfoDTO meteorologicalInfoDTO) {
-        try {
-            MeteorologicalInfoEntity metInfo = service.create(meteorologicalInfoDTO);
+    public ResponseEntity<MeteorologicalInfoEntity> createMeteorologicalData(@RequestBody MeteorologicalInfoEntity meteorologicalInfoEntity) {
+            MeteorologicalInfoEntity metInfo = service.createMeteorologicalInfo(meteorologicalInfoEntity);
             return new ResponseEntity<MeteorologicalInfoEntity>(metInfo, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @GetMapping
@@ -52,4 +47,23 @@ public class MeteorologicalInfoController {
                 return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MeteorologicalInfoEntity> findMeteorologicalDataID(@PathVariable Long id){
+        return ResponseEntity.ok().body(service.findById(id));
+    }
+
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deleteMeteorologicalInfo(@PathVariable Long id) {
+        service.deleteMeteorologicalInfoById(id);
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizar(@RequestBody MeteorologicalInfoEntity metInfo){
+        service.editMeteorologicalInfo(metInfo);
+    }
+
 }

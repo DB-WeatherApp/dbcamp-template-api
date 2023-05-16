@@ -2,6 +2,7 @@ package com.template.data.entity;
 
 import com.template.data.enums.WeatherTypeEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
@@ -12,6 +13,8 @@ public class MeteorologicalInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @NotBlank
     private String city;
     @Column(name = "weather_date")
     private LocalDate weatherDate;
@@ -20,15 +23,16 @@ public class MeteorologicalInfoEntity {
     @Column(name="night_weather")
     private WeatherTypeEnum nightWeather;
     @Column(name = "max_temperature")
-    private int maxTemperature;
+    private Integer maxTemperature;
     @Column(name = "min_temperature")
-    private int minTemperature;
-    private int precipitation;
-    private int humidity;
+    private Integer minTemperature;
+    private Integer precipitation;
+    private Integer humidity;
     @Column(name = "wind_speed")
-    private int windSpeed;
+    private Integer windSpeed;
 
     public MeteorologicalInfoEntity(
+            long id,
             String city,
             LocalDate weatherDate,
             WeatherTypeEnum morningWeather,
@@ -39,7 +43,7 @@ public class MeteorologicalInfoEntity {
             int humidity,
             int windSpeed
     ){
-
+        this.id = id;
         this.city = city;
         this.weatherDate = weatherDate;
         this.morningWeather = morningWeather;
@@ -116,4 +120,33 @@ public class MeteorologicalInfoEntity {
         this.windSpeed = windSpeed;
     }
 
+    public void atualizarinformacoes(MeteorologicalInfoEntity meteorologicalEntity) {
+        if(meteorologicalEntity.city != null) {
+            this.city = meteorologicalEntity.getCity();
+        }
+        if(meteorologicalEntity.weatherDate != null){
+            this.weatherDate = meteorologicalEntity.weatherDate;
+        }
+        if(meteorologicalEntity.morningWeather !=null){
+            this.morningWeather = meteorologicalEntity.morningWeather;
+        }
+        if(meteorologicalEntity.nightWeather != null){
+            this.nightWeather = meteorologicalEntity.nightWeather;
+        }
+        if(meteorologicalEntity.maxTemperature != null){
+            this.maxTemperature = meteorologicalEntity.maxTemperature;
+        }
+        if(meteorologicalEntity.minTemperature != null){
+            this.minTemperature = meteorologicalEntity.minTemperature;
+        }
+        if(meteorologicalEntity.precipitation != null){
+            this.precipitation = meteorologicalEntity.precipitation;
+        }
+        if(meteorologicalEntity.humidity !=null){
+            this.precipitation = meteorologicalEntity.humidity;
+        }
+        if(meteorologicalEntity.windSpeed !=null){
+            this.windSpeed = meteorologicalEntity.windSpeed;
+        }
+    }
 }
