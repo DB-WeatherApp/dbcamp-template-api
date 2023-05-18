@@ -3,10 +3,36 @@
 
 Bem Vindos a API do Desafio - DBCAMP
 =================
+
+![image](https://github.com/DB-WeatherApp/dbcamp-template-api/assets/54593758/58f0e839-d5d8-4cba-8de0-a4c467749b06)
+
 ### Autor: João Vitor Nunes Carvalho
 
+### Features
+- ✅ Cadastrar Dado Meteorológico;
+- ✅ Buscar todos os dados meteorológicos com paginação de 10 e ordem por data;
+- ✅ Buscar por ID;
+- ✅ Buscar por nome da Cidade;
+- ✅ Buscar os próximos 7 dias da semana de uma Cidade;
+- ✅ Editar dado meteorológico por ID;
+- ✅ Deletar dado meteoroóligco por ID:
+- ✅ Rota de HealthCheck;
+<div    align="center">
+<img height=200 src="https://cdn-icons-png.flaticon.com/512/3050/3050031.png"/>
+
+### Principais Mentores:   
+   <table style ="margin-top:10px;">
+     <tr>
+       <td align="center"><a href="https://github.com/riguelbf"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/7014252?v=4" width="100px;" alt=""/><br /><sub><b>Riguel Figueiredo</b></sub></a><br /><a>🛹🛹💙</a></td>
+       <td align="center"><a href="https://github.com/sabrinassantos"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/8310243?v=4" width="100px;" alt=""/><br /><sub><b>Sabrina Santos</b></sub></a><br /><a>🐶🐕❤</a></td>
+     </tr>
+   </table>
+</div>
+
+   
+Indice:
+=======
 <!--ts-->
-* [Status (build and test)](#status)
 * [Descrição do projeto](#descrição-do-projeto)
 * [Pré-requisitos](#-pré-requisitos)
 * [Tecnologias](#-tecnologias)
@@ -28,33 +54,35 @@ Bem Vindos a API do Desafio - DBCAMP
   * [Executando uma migration](#executando-uma-migration)
   * [Revertendo uma migration](#revertendo-uma-migration)
 * [Sobre padrões no versionamento do código](#sobre-padrões-no-versionamento-do-código)
+* [Acessando endpoints e utilizando a API](#acessando-endpoints-e-utilizando-a-api)
 <!--te-->
+<div    align="center">
+<img height=200 src="https://cdn-icons-png.flaticon.com/512/1340/1340358.png"/>
+</div>
 
-## Status
-
-### Build
-![](https://github.com/dbserver/dbcamp-template-api/actions/workflows/build_and_test.yml/badge.svg)
-
-### Testes
-![](https://github.com/kolorobot/spring-boot-junit5/workflows/tests/badge.svg)
 
 ## Descrição do Projeto
-Projeto template base para novas solução de  API REST com as seguintes pré-configurações:
-- Arquitetura em 3 camadas
-- Docker para a aplicação
-- Docker para o banco de dados com PostgreSQL
-- Consultas com ORM configuradas
-- Open API docs com Swagger
-- Migrations com Flyway
-- Spring Boot
+Projeto visando a apredizegem no backend, possuindo as seguintes configurações
+- Arquitetura em 3 camadas;
+- Docker para a aplicação;
+- Docker para o banco de dados com PostgreSQL;
+- Consultas com ORM configuradas;
+- Open API docs com Swagger;
+- Migrations com Flyway;
+- Spring Boot;🍃
+- JUnit e Mockito para os testes;🧪
+- Actuator para HealthCheck;🏥
 
-## 👍 Pré-requisitos
+## 🧱 Pré-requisitos
 
 Como pré requisitos temos os seguintes itens:
-- Java 11 ou superior
-- Docker
-- Maven
-- Flyway
+- Java 11 ou superior;
+- Docker;
+- Maven;
+- Flyway;
+- *OBS:Caso possua uma IDE como "IntelliJ", o Maven e Flyaway (e qualquer outra dependência inserida no POM) vão ser instalados automaticamente dentro do projeto quando clickar para dar reload no lifecycle do maven, como na imagem abaixo (símbolo com 2 setas girando):*
+
+![image](https://github.com/DB-WeatherApp/dbcamp-template-api/assets/54593758/b14d1602-042e-408c-924e-de020f49966d)
 
 ## 🛠 Tecnologias
 
@@ -82,6 +110,7 @@ cd dbcamp-template-api
 ```bash
 mvn install:install-file -Dfile=./pom.xml -DpomFile=./pom.xml
 ```
+
 
 ### Gere o pacote executável
 ```bash
@@ -221,6 +250,7 @@ Para criar arquivos de migrations siga os passos abaixo
 ```bash
 flyway migrate -configFiles=flyway.properties
 ```
+   
 **Observação: você deve estar no diretório do projeto para executar o comando.**
 
 ### Revertendo uma migration
@@ -231,3 +261,52 @@ flyway undo -configFiles=flyway.properties
 ## Sobre padrões no versionamento do código
 
 É desejado que seja utilizado o padrão de Commits Semânticos. Pode entender melhor [nesse link](https://github.com/iuricode/padroes-de-commits)
+
+## Acessando endpoints e utilizando a API
+Por padrão nossa api está rodando na porta http://localhost:4767, o endpoint princpal é o "/api/meteorologicalInfo".
+   - Criar um Dado Meteorológico: dentro da rota "http://localhost:4767/api/meteorologicalInfo" faça uma requisição do tipo POST seguindo o exemplo:
+   
+   ![image](https://github.com/DB-WeatherApp/dbcamp-template-api/assets/54593758/0017ac7c-2a1d-42e8-9236-39cca6943332)
+   
+   - Buscar todos os dados: dentro da rota "http://localhost:4767/api/meteorologicalInfo" faça uma requisição do tipo GET, o retorno será uma paginação de 10 itens ordenados por data. 
+   Para Navegar entre as paginas, adicione no endpoint "?page={pagina desejada}". Exemplo, quero acessar a pagina 2 = http://localhost:4767/api/meteorologicalInfo?page=1
+   
+   ![image](https://github.com/DB-WeatherApp/dbcamp-template-api/assets/54593758/714e1d64-17b7-4907-9103-612cb9c2a2f7)
+
+   *OBS: As paginas são como arrays, iniciam no indice 0, então se eu quiser acessar a página 1, tenho que ir para a ?page=0, pegina 2 = ?page=1 e assim sucessivamente*
+   
+   - Buscar dados por Cidade: basta adicionar o nome da cidade desejada na rota http://localhost:4767/api/meteorologicalInfo/find={cidade}, sendo "cidade" a variável que será adicionado o nome desejado.Faça uma requisição do tipo GET. Exemplo: http://localhost:4767/api/meteorologicalInfo/find=Salvador , o retorno será:
+   
+   ![image](https://github.com/DB-WeatherApp/dbcamp-template-api/assets/54593758/6763cba1-a13f-48a1-8e5b-4ec3f0fb4ee5)
+   
+   - Buscar dados por ID: basta adicionar o id após a rota principal: http://localhost:4767/api/meteorologicalInfo/{id} , sendo "id" a variável que será o id de determinado dado. Faça uma requisição do tipo GET. Exemplo: http://localhost:4767/api/meteorologicalInfo/704 , o retorno será: 
+
+   ![image](https://github.com/DB-WeatherApp/dbcamp-template-api/assets/54593758/df6b5b70-9577-482e-8a70-ad0867b0f0e9)
+
+   - Buscar os próximos 7 dias da semana de uma Cidade: bem semelhante ao de buscar por cidade, basta adicionar o nome da cidade desejada na rota http://localhost:4767/api/meteorologicalInfo/find={cidade} sendo "cidade" a variável que será adicionado o nome desejado. Faça uma requisição do tipo GET. Exemplo: http://localhost:4767/api/meteorologicalInfo/find=Salvador , o retorno será:
+   
+      ![image](https://github.com/DB-WeatherApp/dbcamp-template-api/assets/54593758/c29e302a-1d6f-40c4-9029-8cb348657d80)
+
+   
+-  Editar dado meteorológico por ID: faça uma requisição do tipo PUT na rota: http://localhost:4767/api/meteorologicalInfo . Nessa requisição o id deve ser passado dentro do body, além do ID, nenhuma outra informação meteorológica é obrigatória, sendo assim, você como usuário pode alterar tudo, ou apenas 1 item, fica a seu critério. Exemplo de alteração de nome de cidade e data: 
+```bash
+# Para requisição JSON
+{
+	"id": 603,
+	"city":"Salvador" ,
+	"weatherDate": "2023-04-20"
+}
+```
+ 
+- Deletar dado meteoroóligco por ID: faça uma requisição do tipo DELETE, dentro da rota http://localhost:4767/api/meteorologicalInfo/{id}, sendo ID o identificador unico de determinado dado meteorológico. Exemplo: deletar o dado de ID 7000: http://localhost:4767/api/meteorologicalInfo/7000;
+   
+- Rota de HealthCheck:basta fazer uma requisição do tipo GET dentro da rota http://localhost:2000/health-check/health. 
+   *OBS: a rota padrão foi alterada para 2000 para garantir a segurança da API, já que a health-check da acesso a dados importantes do sistema. Seria adicionado um sistema de segurança para acesso as rotas, porém os mentores recomendaram não se preocupar com isso agora*
+   
+   
+   
+
+   
+
+   
+   
