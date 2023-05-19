@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -219,22 +220,27 @@ class MeteorologicalInfoServiceTests {
         }
     }
     @Test
-    @DisplayName("Find By City Sucess - When findByCity is called with a city that exist, should return a list of MeteorologicalInfo with this city")
+    @DisplayName("Find By City Sucess - When findByCity is called with a city that exist, should return page of MeteorologicalInfo with this city")
     void findByCitySucess(){
+        Pageable page = mock(Pageable.class);
+        String city = "Salvador";
         List<MeteorologicalInfoEntity> meteorologicalInfoList = List.of(meteorologicalInfoEntitySucess);
-        when(repository.findByCity(meteorologicalInfoEntitySucess.getCity())).thenReturn(meteorologicalInfoList);
-        List<MeteorologicalInfoEntity> metInfoList = service.findByCity(meteorologicalInfoEntitySucess.getCity());
+        Page<MeteorologicalInfoEntity> pagination = new PageImpl<MeteorologicalInfoEntity>(meteorologicalInfoList);
+        when(repository.findByCity(eq(city), any(Pageable.class))).thenReturn(pagination);
+        Page<MeteorologicalInfoEntity> metInfoList = service.findByCity(meteorologicalInfoEntitySucess.getCity(),page);
 
         assertNotNull(metInfoList);
-        assertEquals(meteorologicalInfoList,metInfoList);
+        assertEquals(meteorologicalInfoList, metInfoList.getContent());
+        assertEquals(1, metInfoList.getTotalElements());
 
     }
     @Test
     @DisplayName("Find By City Failed - When findByCity is called with a city that dont exist, should return Runtime Exeception ")
     void findByCityFailed(){
-        when(repository.findByCity(meteorologicalInfoEntitySucess.getCity())).thenThrow(new RuntimeException());
+        Pageable page = mock(Pageable.class);
+        when(repository.findByCity(eq(meteorologicalInfoEntitySucess.getCity()),any(Pageable.class))).thenThrow(new RuntimeException());
         try{
-            service.findByCity(meteorologicalInfoEntitySucess.getCity());
+            service.findByCity(meteorologicalInfoEntitySucess.getCity(),page);
         }catch (Exception e){
             assertEquals(RuntimeException.class, e.getClass());
         }

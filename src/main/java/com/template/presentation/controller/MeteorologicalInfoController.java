@@ -54,9 +54,11 @@ public class MeteorologicalInfoController {
         return ResponseEntity.ok().body(service.findById(id));
     }
     @GetMapping("/find={city}")
-    public ResponseEntity <List<MeteorologicalInfoEntity>> findMeteorologicalInfoByCity(@PathVariable String city){
-        List<MeteorologicalInfoEntity> metInfoList = service.findByCity(city);
-        return new ResponseEntity<List<MeteorologicalInfoEntity>>(metInfoList,HttpStatus.OK);
+    public ResponseEntity <Page<MeteorologicalInfoEntity>> findMeteorologicalInfoByCity(
+            @PageableDefault(size=7,sort={"weatherDate"},direction = Sort.Direction.DESC) Pageable page,
+            @PathVariable String city){
+        Page<MeteorologicalInfoEntity> metInfoList = service.findByCity(city,page);
+        return new ResponseEntity<Page<MeteorologicalInfoEntity>>(metInfoList,HttpStatus.OK);
     };
 
 
